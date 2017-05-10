@@ -1,47 +1,38 @@
- 
+
 public class Arista {
-	private int inicio;
-	private int destino;
-	private int distancia;
-	private boolean peaje;
+	private Integer d;
+	private Integer p;
+	private boolean recorrida;
 	
-	Arista(int i,int des, int dis){
-		inicio = i;
-		destino = des;
-		distancia = dis;
-		peaje = false;
+	public Arista(){
+		recorrida = false;
 	}
 	
-	Arista(int i, int des, int dis, boolean pe){
-		inicio = i;
-		destino = des;
-		distancia = dis;
-		peaje = pe;
+	public void agregarArista(int destino, int peso) {
+		d = destino;
+		p = peso;
+	}
+	
+	public void recorrida(){
+		recorrida = true;
+	}
+	
+	public Integer getDestino() {
+		return d;
 	}
 
-	public int getInicio() {
-		return inicio;
+	public Integer getPeso() {
+		return p;
+	}
+	
+	public boolean fueRecorrida() {
+		return recorrida;
 	}
 
-	public int getDestino() {
-		return destino;
-	}
-
-	public int getPeso() {
-		return distancia;
-	}
-	
-	public boolean tienePeaje(){
-		return peaje;
-	}
-	
-	protected void setPeaje(boolean p){
-		peaje = p;
-	}
-	
 	@Override
 	public String toString(){
-		return "[Inicio = " +inicio +"] --> [destino = " +destino +"]";
+		return "" + d;
 	}
-	
+
+
 }
