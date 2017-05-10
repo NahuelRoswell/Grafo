@@ -1,66 +1,78 @@
 import java.util.ArrayList;
 
 public class Solver {
-	private Grafo grafo;
-	private ArrayList<Grafo> grafos;
-	private ArrayList<Arista> auxiliar;
-	private ArrayList<Arista> principal;
+	private ArrayList<Integer> auxiliar, camino;
+	private Grafo g;
+	private int i, solucion;
 	
-	public Solver(Grafo grafo, int peajes){
-		this.grafo = grafo;
-		
-		grafos = new ArrayList<Grafo>();
-		
-		for (int i = 0; i<peajes+1; i++){
-			grafos.add(new Grafo(0));
-			grafo.clonarA(grafos.get(i));
-		}
-	}
-	
-	private int getPeso(ArrayList<Arista> arista){
-		int peso = 0;
-		for (Arista a: arista)
-			peso = a.getPeso();
-	
-		return peso;
+	public Solver(Grafo grafo, int inicio, int destino) {
+		g = grafo;		i = inicio;		solucion = destino;
 	}
 	
 	public void resolver(){
-		principal = new ArrayList<Arista>();
-		auxiliar = new ArrayList<Arista>();
+		camino = new ArrayList<Integer>();
+		auxiliar = new ArrayList<Integer>();
 		considerar(0);
+		mostrarArreglo(camino);
+	}
+
+	private void mostrarArreglo(ArrayList<Integer> array){
+		for (Integer i: array)
+			System.out.print(i +", ");
 	}
 	
-	public void considerar(int indice) {
-		if (indice == grafo.getVertices()) {
-			if (getPeso(auxiliar) < getPeso(principal))
-				intercambiar();
+	public void considerar(int indice){
+		if (indice == solucion){
+			IntercambiarArreglos();
 			return;
 		}
-		auxiliar.add(grafo.tomarArista(indice, indice));
-		considerar(indice + 1);
+		ArrayList<Integer> vecinos = g.getVecinosInt(indice);
 
-		auxiliar.remove(indice);
+		for (int i = 0; i < g.getGrado(indice)-1; i++) 
+			auxiliar.add(vecinos.get(indice));
+		considerar(indice + 1);
+		
+		for (int i = 0; i < g.getGrado(indice)-1; i++) 
+			auxiliar.remove(vecinos.get(indice));
 		considerar(indice + 1);
 	}
 
-	private void intercambiar() {
-		principal = null;
-		for (Arista a: auxiliar)
-			principal.add(a);
+	private void IntercambiarArreglos() {
+//		camino = new ArrayList<Integer>();
+		for(Integer a: auxiliar)
+			camino.add(a);
 	}
 	
 	public static void main(String[] args) {
-		Grafo principal = new Grafo(4);
+		Grafo grafo = new Grafo(4);
+		grafo.agregarArista(0, 1, 8);
+		grafo.agregarArista(0, 2, 1);
+		grafo.agregarArista(1, 3, 7);
+		grafo.agregarArista(2, 3, 1);
 		
-		principal.agregarArista(0, 1, 1);
-		principal.agregarArista(0, 2, 9);
-		principal.agregarArista(1, 3, 6);
-		principal.agregarArista(2, 3, 1);
-		System.out.println(principal.tomarArista(0, 0));
+		//uso indice 0
+		int indice = 0;
+		ArrayList<Arista> auxiliar = new ArrayList<Arista>();
+		ArrayList<Integer> vecinos = grafo.getVecinosInt(indice);
+		ArrayList<Arista> camino = new ArrayList<Arista>();
+		// recorre vecinos y agrega a camino auxiliar
+		for(Integer a: vecinos)
+			auxiliar.add(grafo.tomarArista(indice, a));
 		
-		System.out.println(principal.getGrado(1));
-				Solver s = new Solver(principal,2);
-		s.resolver();
+		//se queda con la mejor opcion de los vecinos y lo agrega al camino final
+		Arista menor = auxiliar.get(indice);
+		for(Arista i: auxiliar)
+			if(i.getPeso() < menor.getPeso())
+				menor = i;
+		
+		camino.add(grafo.tomarArista(menor.getDestino(), indice));
+		camino.add(menor);
+				
+		//imprimir solucion
+		System.out.print("Camino: ");
+		for (Arista a: camino)
+			System.out.print(a +", ");
 	}
+	
+	
 }
