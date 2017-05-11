@@ -1,20 +1,20 @@
 
 public class Arista {
+	private Integer i;
 	private Integer d;
 	private Integer p;
-	private boolean recorrida;
+	private boolean visitado;
 	
 	public Arista(){
-		recorrida = false;
+		visitado = false;
+	} 
+	
+	public void agregarArista(Integer inicio, Integer destino, Integer peso) {
+		i = inicio;		d = destino;		p = peso;
 	}
 	
-	public void agregarArista(int destino, int peso) {
-		d = destino;
-		p = peso;
-	}
-	
-	public void recorrida(){
-		recorrida = true;
+	public void recorrido(){
+		visitado = true;
 	}
 	
 	public Integer getDestino() {
@@ -25,14 +25,24 @@ public class Arista {
 		return p;
 	}
 	
-	public boolean fueRecorrida() {
-		return recorrida;
+	public boolean fueVisitado() {
+		return visitado;
 	}
 
 	@Override
 	public String toString(){
-		return "" + d;
+		return "" +d;
+	}
+	
+
+	
+	
+	public void setPeso(Integer peso){
+		p = peso;
 	}
 
+	public Integer getInicio() {
+		return i;
+	}
 
 }
