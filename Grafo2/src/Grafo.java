@@ -1,88 +1,65 @@
-import java.util.ArrayList;
 
 public class Grafo {
-	private Arista[][] grafo;
+	Integer[][] grafo;
 	
-	Grafo(int vertices){
-		grafo = new Arista[vertices][vertices];
-		
-		for(int i = 0; i < getVertices(); i++)
-			for (int j = 0; j < getVertices(); j++)
-				grafo[i][j] = new Arista();
+	public Grafo(int vertices){
+		grafo = new Integer[vertices][vertices];
 	}
 	
 	public void agregarArista(int inicio, int destino, int peso){
-		chequearIndice(inicio, "chequear inicio","inicio");
-		chequearIndice(destino, "chequear destino","destino");
+		 chequarArista(inicio,destino,"agregar Arista");
 		
-		grafo[inicio][destino].agregarArista(destino, peso);
-		grafo[destino][inicio].agregarArista(inicio, peso);
+		 grafo[inicio][destino] = peso;
 	}
-	
-	public Arista tomarArista(int inicio, int destino){
-		return grafo[inicio][destino];
-	}
-	
-	private void chequearIndice(int indice, String accion, String variable) {
-		if(indice < 0 || indice > getVertices())
-			throw new IllegalArgumentException("el indice para " +accion +" esta fuera de rango!" +variable  +" = "+indice);
-	}
-	
-	public ArrayList<Integer> getVecinosInt(int indice){
-		ArrayList<Integer> ret = new ArrayList<Integer>();
-		for (int i = 0; i < grafo.length; i++) 
-			if (grafo[indice][i].getDestino() !=null)
-				ret.add(grafo[indice][i].getDestino());
 
-		return ret;
+	private void chequarArista(int inicio, int destino, String accion) {
+		if (inicio < 0 || inicio > getVertices()-1)
+			throw new IllegalArgumentException("Se intentó " +accion +" ! i= "+inicio +", j = "+destino);
 	}
-	
-		 
 	
 	public int getVertices(){
 		return grafo.length;
 	}
 	
-	/** Retorna la cantidad de vecinos**/
-	public int getGrado(int i){
-		int vecinos = 0;
-		for (int j = 0; j < getVertices(); j++) 
-			if (grafo[i][j].getDestino()!=null)
-				vecinos++;
-		
-		return vecinos;
-	}
-	
-	public void print() {
-		for (int i = 0; i < grafo.length; i++){
+	public void print(){
+		for (int i = 0; i < grafo.length; i++) {
 			System.out.print(i + " -- ");
+			
 			for (int j = 0; j < grafo.length; j++) {
-				if (grafo[i][j].getDestino() != null)
+				if (j == i)
+					System.out.print("0 ");
+				else if (grafo[i][j] != null) // si ij ∈ A
 					System.out.print(grafo[i][j] + " ");
 				else
-					System.out.print("x ");
+					System.out.print("& "); // si ij ∈ A
+
 				if (j == grafo.length - 1)
 					System.out.println();
 			}
 		}
 	}
+
+	public void camino() {
+		for (int k = 1; k < getVertices(); k++) {
+			for (int i = 1; i < getVertices(); i++) {
+				for (int j = 1; j < getVertices(); j++) {
+					if (grafo[i][k] != null && grafo[k][j] != null)
+						if (grafo[i][j] > grafo[i][k] + grafo[k][j]) {
+							grafo[i][j] = grafo[i][k] + grafo[k][j];
+						}
+				}
+			}
+			System.out.println(k + ":");
+			print();
+		}
+	}
 	
-	
-	
-	public static void main(String[] args) {
-		Grafo grafo = new Grafo(4);
-		grafo.agregarArista(0, 1, 8);
-		grafo.agregarArista(0, 2, 1);
-		grafo.agregarArista(1, 3, 7);
-		grafo.agregarArista(2, 3, 1);
-		
-		System.out.println(grafo.tomarArista(0, 1).getPeso());
-		
-		
-//		ArrayList<Integer> ret = grafo.getVecinos(0);
-//		for(Integer i: ret) if (i!=null)
-//			System.out.print(i +", ");
-//		grafo.print();
-		grafo.print();
+	public Grafo clonar(Grafo clon) {
+		for (int i = 0; i < getVertices(); i++)
+			for (int j = 0; j < getVertices(); j++)
+				if (grafo[i][j] != null)
+					clon.agregarArista(i, j, grafo[i][j]);
+
+		return clon;
 	}
 }

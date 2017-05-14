@@ -33,13 +33,22 @@ public class Grafo2 {
 		ArrayList<Integer> ret = new ArrayList<Integer>();
 		
 		for (int i = 0; i < grafo.length; i++)
-			if (grafo[indice][i].getDestino() != null && !grafo[indice][i].fueVisitado())
+			if (grafo[indice][i].getDestino() != null && !grafo[indice][i].fueRecorrido())
 				ret.add(grafo[indice][i].getDestino());
 
 		return ret;
 	}
 	
-		 
+	public ArrayList<Arista> getVecinos(int indice){
+		ArrayList<Arista> ret = new ArrayList<Arista>();
+		
+		for (int i = 0; i < grafo.length; i++)
+			if (grafo[indice][i].getDestino() != null && !grafo[indice][i].fueRecorrido())
+				ret.add(grafo[indice][i]);
+
+		return ret;
+	}
+	
 	
 	public int getVertices(){
 		return grafo.length;
@@ -55,6 +64,16 @@ public class Grafo2 {
 		return vecinos;
 	}
 	
+	public Grafo2 clonar(Grafo2 grafoClonado) {
+		for (int inicio = 0; inicio < getVertices(); inicio++)
+			for (int destino = 0; destino < getVertices(); destino++)
+				if (grafo[inicio][destino].getPeso() != null)
+					grafoClonado.agregarArista(inicio, tomarArista(inicio, destino).getDestino(),
+							tomarArista(inicio, destino).getPeso());
+
+		return grafoClonado;
+	}
+
 	public void print() {
 		for (int i = 0; i < grafo.length; i++) {
 			System.out.print(i + " -- ");
@@ -91,14 +110,7 @@ public class Grafo2 {
 		grafo.print();
 	}
 
-	public Grafo2 clonar(Grafo2 m) {
-				for (int i = 0; i < getVertices(); i++) 
-					for (int j = 0; j < getVertices(); j++) 
-						if (grafo[i][j].getPeso() !=null)
-							m.agregarArista(i,tomarArista(i,j).getDestino(), tomarArista(i,j).getPeso());
-				
-		return m;		
-	}
+
 
 
 

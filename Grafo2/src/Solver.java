@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class Solver {
 	ArrayList<Arista> auxiliar = new ArrayList<Arista>();
-	ArrayList<Integer> vecinos = new ArrayList<Integer>();
+	Set<Integer> vecinos = new HashSet<Integer>();
 	LinkedList<Arista> camino = new LinkedList<Arista>();
 	
 	private Grafo2 g;
@@ -30,12 +32,13 @@ public class Solver {
 //		grafo.agregarArista(2, 3, 1);
 //		grafo.agregarArista(3, 1, 4);
 //		grafo.agregarArista(3, 2, 4);
-		
 		Solver s = new Solver(grafo,0,3);
-		System.out.print("Camino: ");
+		System.out.print("auxiliar: ");
 		s.caminoMinimo(0);
+		s.limpiarVecinos();
 	}
 	
+
 	public LinkedList<Arista> distra(int inicio, int fin) {
 		if (camino.isEmpty())
 			caminoMinimo(inicio);
@@ -56,14 +59,12 @@ public class Solver {
 		Mejorvecino();
 				
 //		__________________________________________________
-		agregarVecinos(camino.get(0).getDestino());
+//		agregarVecinos(camino.get(0).getDestino());
 
-		cargarAristas(camino.get(0).getDestino());
+//		cargarAristas(camino.get(0).getDestino());
 		
-		Mejorvecino();
+//		Mejorvecino();
 
-		for(Arista i: camino)
-			System.out.print(i +", ");
 
 	}
 
@@ -76,7 +77,7 @@ public class Solver {
 					menor = i;
 
 			if (camino.isEmpty()) {
-				menor.recorrido();
+				menor.yaRecorrido();
 				camino.add(menor);
 			} else {
 				cambiarAristayPeso(menor);
@@ -98,15 +99,21 @@ public class Solver {
 	}
 
 	private void limpiarVecinos() {
-		for (int i = 0; i < auxiliar.size(); i++) 
-			if(auxiliar.get(i).fueVisitado())
+		for (int i = 0; i < auxiliar.size(); i++) {
+			if(auxiliar.get(i).fueRecorrido()==true)
 				auxiliar.remove(i);
+		}
+
+		for(Arista i: auxiliar)
+			System.out.print(i +", ");
 	}
 
 	
 	private void cargarAristas(int indice) {
+//		limpiarAuxiliar();
+		
 		for(Integer destino: vecinos) 
-			if (g.tomarArista(indice, destino).getPeso() !=null)
+			if (g.tomarArista(indice, destino).getPeso() !=null && !g.tomarArista(indice, destino).fueRecorrido())
 				auxiliar.add(g.tomarArista(indice, destino));
 	}
 
@@ -114,7 +121,7 @@ public class Solver {
 		ArrayList<Integer> aux = g.getVecinosInt(indice);
 		
 		for (Integer vecino: aux)
-			if (!g.tomarArista(indice, vecino).fueVisitado())
+			if (!g.tomarArista(indice, vecino).fueRecorrido())
 				vecinos.add(vecino);
 	}	
 	
