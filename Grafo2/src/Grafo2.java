@@ -2,9 +2,13 @@ import java.util.ArrayList;
 
 public class Grafo2 {
 	private Arista[][] grafo;
+	private static int ids = 0;
+	private int id;
 	
 	Grafo2(int vertices){
 		grafo = new Arista[vertices][vertices];
+		
+		id = ids++;
 		
 		for(int i = 0; i < getVertices(); i++)
 			for (int j = 0; j < getVertices(); j++)
@@ -15,6 +19,12 @@ public class Grafo2 {
 		chequearIndice(inicio, destino, "agregar Arista");
 		
 		grafo[inicio][destino].agregarArista(inicio,destino, peso);
+	}
+	
+	public void agregarArista(int inicio, int destino, int peso, boolean peaje){
+		chequearIndice(inicio, destino, "agregar Arista");
+		
+		grafo[inicio][destino].agregarArista(inicio,destino, peso, peaje);
 	}
 	
 	public Arista tomarArista(int inicio, int destino){
@@ -64,7 +74,7 @@ public class Grafo2 {
 		return vecinos;
 	}
 	
-	public Grafo2 clonar(Grafo2 grafoClonado) {
+	public Grafo2 clonarEn(Grafo2 grafoClonado) {
 		for (int inicio = 0; inicio < getVertices(); inicio++)
 			for (int destino = 0; destino < getVertices(); destino++)
 				if (grafo[inicio][destino].getPeso() != null)
@@ -90,6 +100,10 @@ public class Grafo2 {
 					System.out.println();
 			}
 		}
+	}
+	
+	public int getId(){
+		return id;
 	}
 	
 	

@@ -1,33 +1,49 @@
 
 public class Arista {
-	private Integer i;
-	private Integer d;
-	private Integer p;
-	private boolean visitado;
+	private Integer inicio;
+	private Integer destino;
+	private Integer peso;
 	private Arista siguiente, anterior;
-	
+	private boolean visitado;
+	private boolean peaje;
+	private int peajesVisitados = 0;
+
 	public Arista(){
 		visitado = false;
 	} 
 	
-	Arista(Integer inicio, Integer destino, Integer peso) {
-		i = inicio;		d = destino;		p = peso;
+	Arista(Integer i, Integer d, Integer p) {
+		inicio = i;		destino = d;		peso = p;	peaje = false;
 	}
 	
-	public void agregarArista(Integer inicio, Integer destino, Integer peso) {
-		i = inicio;		d = destino;		p = peso;
+	public void agregarArista(Integer i, Integer d, Integer p) {
+		inicio = i;		destino = d;		peso = p;	peaje = false;
+	}
+	
+	public void agregarArista(Integer i, Integer d, Integer p, boolean peaj){
+		inicio = i;
+		destino = d;
+		peso = p;
+		peaje = peaj;
+		
+		if (tienePeaje())
+			sumarPeajeRecorrido();
 	}
 	
 	public void yaRecorrido(){
 		visitado = true;
 	}
 	
+	public Integer getInicio() {
+		return inicio;
+	}
+	
 	public Integer getDestino() {
-		return d;
+		return destino;
 	}
 
 	public Integer getPeso() {
-		return p;
+		return peso;
 	}
 	
 	public boolean fueRecorrido() {
@@ -35,16 +51,11 @@ public class Arista {
 	}
 
 	public void setPeso(Integer peso){
-		p = peso;
-	}
-
-	public Integer getInicio() {
-		return i;
+		peso = peso;
 	}
 	
-	public void enlazar(Arista arista){
+	public void asignarAnteriorDe(Arista arista){
 		arista.setAnterior(this);
-//		this.siguiente = arista;
 		
 	}
 	private void setAnterior(Arista arista) {
@@ -59,10 +70,26 @@ public class Arista {
 		return siguiente;
 	}
 	
+	private void setCantidadPeajes(){
+		
+	}
 	
+	public boolean tienePeaje() {
+		return peaje;
+	}
+	
+	public int getPeajesVisitados() {
+		return peajesVisitados;
+	}
+
+	public void sumarPeajeRecorrido(){
+		peajesVisitados++;
+	}
+
 	@Override
 	public String toString(){
-		return "i: "+i +" -> d: " +d +"|| p acumulado: " +p;
+		return "\ni: "+inicio +" -> d: " +destino 
+				+"\n p acumulado: " +peso +" peajesV: "+peajesVisitados;
 	}
 	
 	@Override
@@ -74,5 +101,9 @@ public class Arista {
 					this.getDestino().equals(a.getDestino());
 		}
 		return r;
+	}
+
+	public void setPeajesRecorridos(int peajes) {
+		peajesVisitados = peajes;
 	}
 }
