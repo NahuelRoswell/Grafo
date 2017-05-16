@@ -1,34 +1,22 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 
-public class Dijkstra {
-	private static Grafo2 [] grafos;
+public class Dijkstra implements Serializable{
 	private LinkedList<Integer> camino = new LinkedList<Integer>();
 	private ArrayList<Arista> yaRecorridos = new ArrayList<Arista>();
 	private ArrayList<Arista> auxiliar = new ArrayList<Arista>();
 	private int inicio, solucion, cantPeajes;
 	private Arista resultado;
-	private Grafo2 grafo;
+	private Grafo1 grafo;
 	
-	public Dijkstra(Grafo2 g, int i, int destino, int cantidadPeajes) {
+	public Dijkstra(Grafo1 g, int i, int destino, int cantidadPeajes) {
 		grafo = g;		inicio = i;		solucion = destino;		cantPeajes = cantidadPeajes;
 		
 		yaRecorridos.add(new Arista(i, i, 0));
-
-		if (cantidadPeajes !=0)
-			generarGrafos();
 	}
 	
-	private void generarGrafos() {
-		grafos = new Grafo2[cantPeajes + 1];
-		
-		for (int i = 0; i < grafos.length; i++) {
-			grafos[i] = new Grafo2(grafo.getVertices());
-			grafos[i] = grafo.clonarEn(grafos[i]);
-		}
-	}
-
 	private void agregarVecinos(int indice, Integer peso){
 		ArrayList<Arista> vecinos = grafo.getVecinos(indice);
 		
@@ -40,26 +28,16 @@ public class Dijkstra {
 	
 	private Arista tomarNoRecorridoConMenorPeso() {
 		Arista referencia = new Arista();
-		referencia.agregarArista(null, null, (int) Double.POSITIVE_INFINITY);
+		referencia.agregar(null, null, (int) Double.POSITIVE_INFINITY);
 
 		for (Arista arista : auxiliar)
 			if (!arista.fueRecorrido() 
 					&& arista.getPeso() < referencia.getPeso())
-//					&&	yaRecorridos.get(buscarPorInicio(referencia)).getPeajesVisitados() <= cantPeajes)
-//						y si puede saltar al siguietnte..					&& arista.getPeajesVisitados() + peajesYaVisitados <= cantPeajes) //
 				referencia = arista;
-
 
 		return referencia;
 	}
 	
-	private void irProximoGrafo(Arista arista) {
-		Integer inicio = arista.getInicio();
-		Integer destino = arista.getDestino();
-		
-		
-	}
-
 	private void marcarPrincipal(Arista menor) {
 		int indice = buscarPorInicio(menor);
 
@@ -74,7 +52,6 @@ public class Dijkstra {
 
 		yaRecorridos.add(suplente);
 	}
-	
 	
 	private void acumularDatos(Arista arista, int indice) {
 		if (arista.getInicio() != 0) {
@@ -102,7 +79,7 @@ public class Dijkstra {
 	
 	public Arista resolver() {
 		Arista menor = new Arista();
-		menor.agregarArista(inicio, inicio, 0);
+		menor.agregar(inicio, inicio, 0);
 
 		while (menor.getPeso() != (int) Double.POSITIVE_INFINITY && menor.getDestino() != solucion) {
 			agregarVecinos(menor.getDestino(), menor.getPeajesVisitados());
@@ -135,22 +112,24 @@ public class Dijkstra {
 		camino.addFirst(yaRecorridos.get(0).getInicio());
 	}
 	
-	public void mostrarResultado(){
-		System.out.print("[ ");
+	public String mostrarResultado(){
+		String resultado ="";
+		resultado += ("[ ");
 		for (Integer i: camino)
-			System.out.print(i +", ");
-		System.out.println("]");
+			resultado += (i +" --> ");
+		resultado+=("]");
+		return resultado;
 	}
  
 	public static void main(String[] args) {
-		Grafo2 grafo = new Grafo2(6);
+		Grafo1 grafo = new Grafo1(6);
 		grafo.agregarArista(0, 1, 10,true);
 		grafo.agregarArista(0, 2, 1,true);
 		grafo.agregarArista(1, 3, 9);
-		grafo.agregarArista(2, 3, 100,true);
+		grafo.agregarArista(2, 3, 1,true);
 		grafo.agregarArista(3, 4, 12);
 		grafo.agregarArista(3, 5, 1);
-		Dijkstra s = new Dijkstra(grafo,0,4, 3);
+		Dijkstra s = new Dijkstra(grafo,0,4, 1);
 
 //		Grafo2 grafo = new Grafo2(8);
 //		grafo.agregarArista(0, 1, 3);
@@ -176,7 +155,7 @@ public class Dijkstra {
 //		Dijkstra s = new Dijkstra(grafo,0,5,2);
 
 		Arista menor = s.resolver();
-		System.out.println(menor.getPeajesVisitados());
+//		System.out.println(menor.getPeajesVisitados());
 		s.mostrarResultado();
 		
 				

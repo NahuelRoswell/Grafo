@@ -8,10 +8,10 @@ public class Solver {
 	Set<Integer> vecinos = new HashSet<Integer>();
 	LinkedList<Arista> camino = new LinkedList<Arista>();
 	
-	private Grafo2 g;
+	private Grafo g;
 	private int i, solucion;
 	
-	public Solver(Grafo2 grafo, int inicio, int destino) {
+	public Solver(Grafo grafo, int inicio, int destino) {
 		g = grafo;		i = inicio;		solucion = destino;
 	}
 	
@@ -22,7 +22,7 @@ public class Solver {
 	
 	
 	public static void main(String[] args) {
-		Grafo2 grafo = new Grafo2(4);
+		Grafo grafo = new Grafo(4);
 		grafo.agregarArista(0, 1, 1);
 		grafo.agregarArista(0, 2, 9);
 		grafo.agregarArista(2, 3, 9);

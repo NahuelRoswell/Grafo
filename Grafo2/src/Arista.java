@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Arista {
+public class Arista implements Serializable{
 	private Integer inicio;
 	private Integer destino;
 	private Integer peso;
@@ -11,26 +12,24 @@ public class Arista {
 	public Arista(){
 		visitado = false;
 	} 
-	
+
 	Arista(Integer i, Integer d, Integer p) {
-		inicio = i;		destino = d;		peso = p;	peaje = false;
+		agregar(i, d, p, false);
 	}
 	
-	public void agregarArista(Integer i, Integer d, Integer p) {
-		inicio = i;		destino = d;		peso = p;	peaje = false;
+	public void agregar(Integer i, Integer d, Integer p) {
+		inicio = i;		destino = d;	peso = p;	peaje = false;
 	}
 	
-	public void agregarArista(Integer i, Integer d, Integer p, boolean peaj){
-		inicio = i;
-		destino = d;
-		peso = p;
+	public void agregar(Integer i, Integer d, Integer p, boolean peaj) {
+		agregar(i, d, p);
 		peaje = peaj;
-		
+
 		if (tienePeaje())
 			sumarPeajeRecorrido();
 	}
-	
-	public void yaRecorrido(){
+
+	public void yaRecorrido() {
 		visitado = true;
 	}
 	
@@ -68,10 +67,6 @@ public class Arista {
 	
 	public Arista getSiguiente(){
 		return siguiente;
-	}
-	
-	private void setCantidadPeajes(){
-		
 	}
 	
 	public boolean tienePeaje() {
