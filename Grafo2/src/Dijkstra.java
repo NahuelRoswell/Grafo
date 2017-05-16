@@ -130,7 +130,7 @@ public class Dijkstra implements Serializable{
 		grafo.agregarArista(3, 4, 12);
 		grafo.agregarArista(3, 5, 1);
 		Dijkstra s = new Dijkstra(grafo,0,4, 1);
-
+ 
 //		Grafo2 grafo = new Grafo2(8);
 //		grafo.agregarArista(0, 1, 3);
 //		grafo.agregarArista(0, 2, 1);

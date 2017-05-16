@@ -1,5 +1,5 @@
 import java.io.Serializable;
-
+ 
 public class Arista implements Serializable{
 	private Integer inicio;
 	private Integer destino;
