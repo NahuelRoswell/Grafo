@@ -44,7 +44,8 @@ public class Dijkstra implements Serializable{
 		menor.yaRecorrido();
 		acumularDatos(menor,indice);
 
-		Arista suplente = new Arista(menor.getInicio(), menor.getDestino(), menor.getPeso());
+		Arista suplente = new Arista(menor.getInicio(), menor.getDestino(),
+				menor.getPeso());
 		suplente.setPeajesRecorridos(menor.getPeajesVisitados());
 		suplente.yaRecorrido();
 		
@@ -60,7 +61,7 @@ public class Dijkstra implements Serializable{
 
 			arista.setPeso(peso);
 		}
-		// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		
 		int peajes = yaRecorridos.get(indice).getPeajesVisitados() == 0 ? arista.getPeajesVisitados()
 				: arista.getPeajesVisitados() + yaRecorridos.get(indice).getPeajesVisitados();
 
@@ -115,15 +116,14 @@ public class Dijkstra implements Serializable{
 	
 	public String mostrarResultado(){
 		String resultado ="";
-		resultado += ("[ ");
 		for (Integer i: camino)
-			resultado += (i +" --> ");
-		resultado+=("]");
+			resultado += (i);
 		return resultado;
 	}
  
 	public static void main(String[] args) {
 		Grafo1 grafo = new Grafo1(6);
+		
 		grafo.agregarArista(0, 1, 10, true);
 		grafo.agregarArista(0, 2, 1, true);
 		grafo.agregarArista(1, 3, 9);
@@ -154,16 +154,13 @@ public class Dijkstra implements Serializable{
 //		grafo.agregarArista(3, 4, 1, true);
 //		grafo.agregarArista(4, 5, 6);
 //		Dijkstra s = new Dijkstra(grafo,0,5,2);
-
-		Arista menor = s.resolver();
-		Arista menor2 = s.resolver();  // aca esta el error 
-		
+//		Arista menor = s.resolver();
+		Arista menor2 = s.resolver();  // aca esta el error, las variables quedan completadas
 		
 		
 		String resultado = s.mostrarResultado();
-		System.out.println(resultado);
 		
-				
+		System.out.println(resultado);
 	}
 	
 	
