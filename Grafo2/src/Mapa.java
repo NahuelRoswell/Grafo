@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
@@ -192,6 +194,22 @@ public class Mapa {
 				boolean tienePeaje = checkPeaje.isSelected();
 				
 				grafo.agregarArista(inicio, destino, peso,tienePeaje);
+			
+				agregarLineaArista(inicio, destino);
+			}
+
+			private void agregarLineaArista(int inicio, int destino) {
+				Coordinate a = coordenadas.get(inicio);
+				Coordinate b = coordenadas.get(destino);
+				
+				ArrayList <Coordinate>coordenadas = new ArrayList();
+				coordenadas.add(a);
+				coordenadas.add(b);
+				coordenadas.add(a);
+				
+				MapPolygon poligono = new MapPolygonImpl (coordenadas);
+				poligono.getStyle().setColor(Color.CYAN);
+				mapa.addMapPolygon(poligono);
 			}
 		});
 		btnAgregarArista.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -309,16 +327,10 @@ public class Mapa {
 		mapa.addMapMarker(marker);
 		
 		
-//		ArrayList <Coordinate> coordenadas = new ArrayList <Coordinate>();
-//		coordenadas.add(new Coordinate(-34.521, -58.7008));
-//		coordenadas.add(new Coordinate(-34.546, -58.719));
-//		coordenadas.add(new Coordinate(-34.559, -58.721));
-//		coordenadas.add(new Coordinate(-34.569, -58.725));
-//		coordenadas.add(new Coordinate(-34.569, -58.725));
-//		coordenadas.add(new Coordinate(-34.532, -58.730));
+
 		
-		MapPolygon poligono = new MapPolygonImpl (coordenadas);
-		mapa.addMapPolygon(poligono);
+		
+
 	}
 	
 //	public void guardar() {

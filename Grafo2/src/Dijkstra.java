@@ -60,6 +60,7 @@ public class Dijkstra implements Serializable{
 
 			arista.setPeso(peso);
 		}
+		// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 		int peajes = yaRecorridos.get(indice).getPeajesVisitados() == 0 ? arista.getPeajesVisitados()
 				: arista.getPeajesVisitados() + yaRecorridos.get(indice).getPeajesVisitados();
 
@@ -104,10 +105,10 @@ public class Dijkstra implements Serializable{
 	}
 	
 	private void transformarAEntero() {
-		Arista a = resultado;
-		while (a.getAnterior() != null) {
-			camino.addFirst(a.getDestino());
-			a = a.getAnterior();
+		Arista arista = resultado;
+		while (arista.getAnterior() != null) {
+			camino.addFirst(arista.getDestino());
+			arista = arista.getAnterior();
 		}
 		camino.addFirst(yaRecorridos.get(0).getInicio());
 	}
@@ -123,10 +124,10 @@ public class Dijkstra implements Serializable{
  
 	public static void main(String[] args) {
 		Grafo1 grafo = new Grafo1(6);
-		grafo.agregarArista(0, 1, 10,true);
-		grafo.agregarArista(0, 2, 1,true);
+		grafo.agregarArista(0, 1, 10, true);
+		grafo.agregarArista(0, 2, 1, true);
 		grafo.agregarArista(1, 3, 9);
-		grafo.agregarArista(2, 3, 1,true);
+		grafo.agregarArista(2, 3, 1, true);
 		grafo.agregarArista(3, 4, 12);
 		grafo.agregarArista(3, 5, 1);
 		Dijkstra s = new Dijkstra(grafo,0,4, 1);
@@ -155,8 +156,12 @@ public class Dijkstra implements Serializable{
 //		Dijkstra s = new Dijkstra(grafo,0,5,2);
 
 		Arista menor = s.resolver();
-//		System.out.println(menor.getPeajesVisitados());
-		s.mostrarResultado();
+		Arista menor2 = s.resolver();  // aca esta el error 
+		
+		
+		
+		String resultado = s.mostrarResultado();
+		System.out.println(resultado);
 		
 				
 	}
